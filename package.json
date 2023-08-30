@@ -1,0 +1,12 @@
+{
+  "name": "ts-utility-types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node-ts src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
