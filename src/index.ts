@@ -110,3 +110,44 @@ const equals9: Equals<nonNullableDogsName, 'husky' | 'corgi'> = true;
 
 // Parameters
 // 基于 函数类型T 的参数类型 构造一个 元组类型
+
+// 预备知识
+// 1. infer: 从条件类型中推断某个位置的类型，并extract出来
+type Flat<T> = T extends Array<infer Item> ? Item : T; // Extract Item type from matched Array
+type MixedType = Array<string> | number | boolean;
+type Flattened = Flat<MixedType>; // string | number | boolean
+const equals10: Equals<Flattened, string | number | boolean> = true;
+
+// 2. Function type
+// (1) 一般的Function type expression
+type ToString = (o: any) => string;
+// (2) call-signatures, callable interface
+interface Func {
+  (arg: number, arg1: string): string;
+}
+const funcImpl: Func = (arg, arg1) => `${arg}!`;
+// (3) declare, 告知typescript这个函数存在
+declare function Func1(...args: string[]): string;
+type Func1Type = typeof Func1;
+
+// Parameters type
+type Parameters<T extends (...args: any) => any> = T extends (
+  ...args: infer Args
+) => any
+  ? Args
+  : never;
+
+type FuncParaType = Parameters<Func>;
+const para: FuncParaType = [1, 'str'];
+
+const equals11: Equals<Parameters<Func>, [number, string]> = true;
+
+// ReturnType
+// 获取函数的返回值
+type ReturnType<T extends (...args: any) => any> = T extends (
+  ...args: any
+) => infer P
+  ? P
+  : never;
+
+const equals12: Equals<ReturnType<Func>, string> = true;
